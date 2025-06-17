@@ -1,0 +1,139 @@
+.nav-con {
+    background-color: rgb(42, 0, 88);
+    display: flex;
+    width: 100%;
+    border-radius: 12px;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+p {
+    color: white;
+}
+
+.logo img {
+    width: 55px;
+    height: 55px;
+    padding: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+
+}
+
+.left-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.logo p {
+    font-size: 25px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.online {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    height: 35px;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(rgb(42, 0, 88)) padding-box,
+        linear-gradient(to right, rgb(2, 252, 219), rgb(45, 131, 174)) border-box;
+    padding-left: 6px;
+    padding-right: 6px;
+    transition: 0.2s;
+
+
+}
+
+
+.online p {
+
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: sans-serif;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, rgb(2, 252, 219), rgb(45, 131, 174));
+}
+
+.logo-cen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.logo-cen-1 {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(87, 49, 126);
+    color: white;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    padding: 3px;
+    transition: 0.2s;
+}
+
+.logo-cen-1:hover {
+    border: 2px solid blueviolet;
+    background-color: rgb(87, 49, 126);
+    
+}
+.cen-logo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 20px;
+
+}
+.right-con{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 20px;
+    padding-right: 10px;
+}
+
+.icon-lable{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 10px;
+    width: auto;
+    height: auto;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 6px;
+    transition: 0.5s;
+    
+}
+.icon-lable p{
+   font-size: 18px;
+   font-weight: bold;
+   font-family: sans-serif;
+    
+
+}
+.icon-lable:hover
+{
+    background-color: rgb(87, 49, 126);
+}
+ 
