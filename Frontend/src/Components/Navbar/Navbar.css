@@ -79,8 +79,8 @@ p {
 }
 
 .logo-cen-1 {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background-color: rgb(87, 49, 126);
     color: white;
     border-radius: 6px;
@@ -136,4 +136,82 @@ p {
 {
     background-color: rgb(87, 49, 126);
 }
- 
+ @media (max-width: 1078px) {
+    .icon-lable p{
+        display: none;
+    }
+ }
+ @media (max-width: 850px) {
+   .cen-logo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 10px;
+
+}
+ }
+ /* Add this at the bottom of your CSS file */
+
+.menu-icon {
+    display: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+}
+@media (max-width: 768px) {
+    .menu-icon {
+        display: block;
+    }
+
+    .center-con {
+        display: none;
+        position: absolute; 
+        top: 75px;
+        right: 0.5rem;
+        width: 50%;
+        background-color: rgb(42, 0, 88);
+        z-index: 999;
+        flex-direction: column;
+        padding: 10px 0;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        border-radius: 0 0 12px 12px;
+    }
+
+    .center-con.mobile-show {
+        display: flex;
+    }
+
+    .cen-logo {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .right-con {
+        display: none;
+    }
+
+    .left-con {
+        flex: 1;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 10px;
+    }
+}
+@media (max-width: 400px) {
+    .online{
+        display: none;
+    }
+  
+}
+
+@media (min-width: 770px) {
+    .disSetting{
+        display: none;
+    }
+
+}
+ a {
+    text-decoration: none;
+}
