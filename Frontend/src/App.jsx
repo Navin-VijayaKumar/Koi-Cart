@@ -7,6 +7,8 @@ import Cart from './Pages/Cart/Cart'
 import Buy from './Pages/Buy/Buy'
 import About from './Pages/About/About'
 import Scape from './Pages/Scape/Scape'
+import Footer from './Components/Footer/Footer'
+import Contact from './Pages/Contact/Contact'
 function App() {
 
   return (
@@ -18,7 +20,9 @@ function App() {
         <Route path='/buy' element={<Buy />} />
         <Route path='/about' element={<About></About>} />
         <Route path='/scape' element={<Scape></Scape>} />
+        <Route path='/contact' element={<Contact></Contact>} />
       </Routes>
+      <Footer></Footer>
     </>
   )
 }

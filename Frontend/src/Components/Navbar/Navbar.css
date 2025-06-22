@@ -2,8 +2,11 @@
     background-color: rgb(42, 0, 88);
     display: flex;
     width: 100%;
+    position: fixed;
     border-radius: 12px;
     height: auto;
+    top: 0;
+    z-index: 9999;
     align-items: center;
     justify-content: space-between;
 
@@ -214,4 +217,7 @@ p {
 }
  a {
     text-decoration: none;
+}
+.nav-all{
+margin-bottom: 80px;
 }

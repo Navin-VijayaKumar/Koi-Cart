@@ -13,7 +13,8 @@ import h1 from '../ComponentAsseets/k1.png'
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
-    return (
+    return (<div className="nav-all">
+
         <div className='nav-con'>
             <div className="left-con">
                 <div className="logo">
@@ -28,7 +29,6 @@ const Navbar = () => {
             <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
                 <FaBars />
             </div>
-            {/* <Link to="/"><li className="nav-item">HOME</li></Link> */}
             <div className={`center-con ${menuOpen ? 'mobile-show' : ''}`}>
                 <div className="cen-logo">
                     <Link to="/"><div className="icon-lable">
@@ -69,6 +69,8 @@ const Navbar = () => {
 
             </div></Link>
         </div>
+            </div>
+
     )
 }
 

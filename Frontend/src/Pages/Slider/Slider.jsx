@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./Slider.css";
-// import nsslider2 from "../AssertsPage/nsslider2.png";
-// import nsslider3 from "../AssertsPage/nsslider3.png";
-// import nsslider4 from "../AssertsPage/nsslider4.png";
-// import nsslider5 from "../AssertsPage/nsslider5.png";
-// import nsslider1 from "../AssertsPage/nsslider1.mp4"; // Ensure this is a video file
+import a1 from '../PageAssets/a1.png'
+//  import  from "../AssertsPage/nsslider2.png";
+//  import  from "../AssertsPage/nsslider3.png";
+//  import  from "../AssertsPage/nsslider4.png";
+//  import  from "../AssertsPage/nsslider5.png";
+//  import  from "../AssertsPage/nsslider1.mp4"; // Ensure this is a video file
 
 const media = [
-  { type: "video", src: "" },
-  { type: "image", src: ""},
-  { type: "image", src: "" },
-  { type: "image", src: "" },
-  { type: "image", src:"" },
+  { type: "video", src: a1 },
+  { type: "image", src: a1},
+  { type: "image", src: a1 },
+  { type: "image", src: a1 },
+  { type: "image", src:a1 },
 ];
 
 const Slider = () => {
