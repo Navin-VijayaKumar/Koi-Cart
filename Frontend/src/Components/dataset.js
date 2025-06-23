@@ -1,0 +1,117 @@
+import koi from './ComponentAsseets/koi.png';
+const koiFishData = [
+  {
+    id: 1,
+    name: "Golden Butterfly",
+    description: "A vibrant golden koi with flowing fins.",
+    breed: "Butterfly Koi",
+    size_cm: 25.5,
+    price: 1500.00,
+    stock: "in",
+    image_url1: koi,
+    image_url2: "/assets/koi1_img2.jpg",
+    image_url3: "/assets/koi1_img3.jpg",
+    video_url: "/assets/koi1_video.mp4",
+    created_at: "2025-06-01T10:00:00"
+  },
+  {
+    id: 2,
+    name: "Showa Sanshoku",
+    description: "A striking koi with red, white, and black patches.",
+    breed: "Showa",
+    size_cm: 30.2,
+    price: 2200,
+    stock: "out",
+    image_url1: koi,
+    image_url2: "/assets/koi2_img2.jpg",
+    image_url3: "/assets/koi2_img3.jpg",
+    video_url: "/assets/koi2_video.mp4",
+    created_at: "2025-06-03T14:30:00"
+  },
+  {
+    id: 2,
+    name: "Showa Sanshoku",
+    description: "A striking koi with red, white, and black patches.",
+    breed: "Showa",
+    size_cm: 30.2,
+    price: 2200,
+    stock: "out",
+    image_url1: koi,
+    image_url2: "/assets/koi2_img2.jpg",
+    image_url3: "/assets/koi2_img3.jpg",
+    video_url: "/assets/koi2_video.mp4",
+    created_at: "2025-06-03T14:30:00"
+  },
+  {
+    id: 2,
+    name: "Showa Sanshoku",
+    description: "A striking koi with red, white, and black patches.",
+    breed: "Showa",
+    size_cm: 30.2,
+    price: 2200,
+    stock: "out",
+    image_url1: koi,
+    image_url2: "/assets/koi2_img2.jpg",
+    image_url3: "/assets/koi2_img3.jpg",
+    video_url: "/assets/koi2_video.mp4",
+    created_at: "2025-06-03T14:30:00"
+  },
+  {
+    id: 2,
+    name: "Showa Sanshoku",
+    description: "A striking koi with red, white, and black patches.",
+    breed: "Showa",
+    size_cm: 30.2,
+    price: 2200,
+    stock: "out",
+    image_url1: koi,
+    image_url2: "/assets/koi2_img2.jpg",
+    image_url3: "/assets/koi2_img3.jpg",
+    video_url: "/assets/koi2_video.mp4",
+    created_at: "2025-06-03T14:30:00"
+  },
+  {
+    id: 2,
+    name: "Showa Sanshoku",
+    description: "A striking koi with red, white, and black patches.",
+    breed: "Showa",
+    size_cm: 30.2,
+    price: 2200,
+    stock: "out",
+    image_url1: koi,
+    image_url2: "/assets/koi2_img2.jpg",
+    image_url3: "/assets/koi2_img3.jpg",
+    video_url: "/assets/koi2_video.mp4",
+    created_at: "2025-06-03T14:30:00"
+  },
+  {
+    id: 2,
+    name: "Showa Sanshoku",
+    description: "A striking koi with red, white, and black patches.",
+    breed: "Showa",
+    size_cm: 30.2,
+    price: 2200,
+    stock: "out",
+    image_url1: koi,
+    image_url2: "/assets/koi2_img2.jpg",
+    image_url3: "/assets/koi2_img3.jpg",
+    video_url: "/assets/koi2_video.mp4",
+    created_at: "2025-06-03T14:30:00"
+  },
+  {
+    id: 3,
+    name: "Platinum Ogon",
+    description: "A sleek, metallic white koi known for its elegance.",
+    breed: "Ogon",
+    size_cm: 20.0,
+    price: 1800,
+    stock: "in",
+    image_url1: koi,
+    image_url2: "/assets/koi3_img2.jpg",
+    image_url3: "/assets/koi3_img3.jpg",
+    video_url: "/assets/koi3_video.mp4",
+    created_at: "2025-06-05T09:15:00"
+  }
+];
+
+export default koiFishData;

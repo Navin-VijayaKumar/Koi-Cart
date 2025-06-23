@@ -1,6 +1,9 @@
-body{
-  background-color: black;
+* {
+  font-family: sans-serif; 
+   scrollbar-width: none;      
+  -ms-overflow-style: none; 
 }
-*{
-  font-family: sans-serif;
+
+body {
+  background-color: rgb(15, 7, 26);
 }
