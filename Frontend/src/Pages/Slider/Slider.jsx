@@ -36,29 +36,29 @@ const Slider = () => {
   };
 
   return (
-    <div className="imageslider">
-      <div className="carousel">
-        <div className="carousel-container">
+    <div className="imageslider1">
+      <div className="carousel1">
+        <div className="carousel-container1">
           {media[currentIndex].type === "image" ? (
             <img
               src={media[currentIndex].src}
               alt={`Slide ${currentIndex + 1}`}
-              className="carousel-image"
+              className="carousel-image1"
             />
           ) : (
             <video
               src={media[currentIndex].src}
-              className="carousel-image"
+              className="carousel-image1"
               autoPlay
               muted
               loop
             />
           )}
         </div>
-        <button className="prev" onClick={prevSlide}>
+        <button className="prev1" onClick={prevSlide}>
           &#10094;
         </button>
-        <button className="next" onClick={nextSlide}>
+        <button className="next1" onClick={nextSlide}>
           &#10095;
         </button>
       </div>

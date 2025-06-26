@@ -1,8 +1,8 @@
-.imageslider{
+.imageslider1{
     padding-top: 40px;
 
 }
-.carousel {
+.carousel1 {
     position: relative;
     width: 100%;
     margin: auto;
@@ -13,7 +13,7 @@
     
 }
   
-.carousel-container {
+.carousel-container1 {
     display: flex;
     width: 100%; 
     transition: transform 0.5s ease-in-out;
@@ -21,7 +21,7 @@
 
 }
   
-.carousel-image {
+.carousel-image1 {
     width: 100%; 
     height: auto; 
     object-fit: contain;
@@ -29,7 +29,7 @@
 }
   
 /* Navigation Buttons */
-.prev, .next {
+.prev1, .next1 {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -42,9 +42,9 @@
     border-radius: 30%;
 }
   
-.prev { left: 10px; }
-.next { right: 10px; }
+.prev1 { left: 10px; }
+.next1 { right: 10px; }
   
-.prev:hover, .next:hover {
+.prev1:hover, .next1:hover {
     background: rgba(0, 0, 0, 0.8);
 }

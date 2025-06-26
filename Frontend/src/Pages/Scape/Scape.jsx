@@ -27,6 +27,7 @@ const Scape = () => {
               </p>
               </div>
             </div>
+              <a href="https://nextscape.vercel.app/" target="_blank" rel="noopener noreferrer">
             <div className="redirect-web">
               <h4>View Site</h4>
               <div className="re-icon">
@@ -35,7 +36,7 @@ const Scape = () => {
               </div>
 
                   
-            </div>
+            </div></a>
       </div>
 </div>
     </div>
