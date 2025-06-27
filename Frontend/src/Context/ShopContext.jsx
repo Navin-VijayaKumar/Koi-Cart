@@ -7,10 +7,9 @@ import sampleFishData from "../Components/dataset"; // Assuming this is the path
 const ShopcontextProvider = (props) => {
     const [all_product, setAll_Product] = useState([]);
     useEffect(() => {
-        // fetch('https://pc-factory-backend.onrender.com/allproducts')
-        // .then((Response)=>Response.json())
-        // .then((data)=>setAll_Product(data))
-        setAll_Product(sampleFishData);
+     fetch('http://localhost:3000/get-koi')
+         .then((Response)=>Response.json())
+         .then((data)=> setAll_Product(data))
 
 
     }, [])

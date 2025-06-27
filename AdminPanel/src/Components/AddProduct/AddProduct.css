@@ -1,0 +1,226 @@
+:root {
+  --primary-color: #4a90e2;
+  --primary-gradient: linear-gradient(135deg, #4a90e2, #7579ff);
+  --secondary-color: #6d5b98;
+  --text-color: #333;
+  --border-color: #e0e0e0;
+  --success-color: #27ae60;
+  --error-color: #e74c3c;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+.addproduct {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+  background-color: #f9fafc;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.addproduct-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.addproduct h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 2rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.addproduct h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+/* Form fields styling */
+.addproduct-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.addproduct-field p {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  color: #4a5568;
+}
+
+.addproduct-field input[type="text"],
+.addproduct-field input[type="number"],
+.addproduct-field input[type="url"] {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background-color: #f8fafc;
+}
+
+.addproduct-field input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  background-color: white;
+}
+
+.addproduct-field input::placeholder {
+  color: #a0aec0;
+}
+
+/* Button styling */
+.down {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.addproduct-button {
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.addproduct-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 15px rgba(74, 144, 226, 0.4);
+}
+
+.addproduct-button:active {
+  transform: translateY(-1px);
+}
+
+.addproduct-button:disabled {
+  background: linear-gradient(135deg, #a0aec0, #cbd5e0);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Validation indicators */
+.addproduct-field.valid input {
+  border-color: var(--success-color);
+}
+
+.addproduct-field.invalid input {
+  border-color: var(--error-color);
+}
+
+/* Responsive grid layout for larger screens */
+@media (min-width: 768px) {
+  .addproduct-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .addproduct h1 {
+    grid-column: span 2;
+  }
+  
+  .down {
+    grid-column: span 2;
+  }
+
+  /* Make description field span both columns */
+  .addproduct-field:nth-child(4) {
+    grid-column: span 2;
+  }
+}
+
+/* Loading animation for button */
+.addproduct-button.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.addproduct-button.loading::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.5);
+  bottom: 0;
+  left: 0;
+  animation: loadingBar 2s infinite linear;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Enhanced focus state for accessibility */
+:focus {
+  outline: 3px solid rgba(74, 144, 226, 0.5);
+  outline-offset: 2px;
+}
+
+/* Form progress indicator */
+.form-progress {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: var(--shadow-md);
+}

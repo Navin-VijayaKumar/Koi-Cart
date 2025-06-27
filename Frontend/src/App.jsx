@@ -25,6 +25,7 @@ function App() {
         <Route path='/scape' element={<Scape></Scape>} />
         <Route path='/contact' element={<Contact></Contact>} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/account" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path='/product/:productID' element={<InnerDisplay></InnerDisplay>} />
       </Routes>

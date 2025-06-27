@@ -18,6 +18,7 @@ const pool = mysql.createPool({
 });
 
 
+
 const app = express();
 const port = 3000;
 app.use(cors());
@@ -26,7 +27,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Backend Server!');
 }
 );
-app.post('/add-koi', (req, res) => {
+app.post('/add-koi', async (req, res) => {
     const {
         id,
         name,
@@ -46,12 +47,12 @@ app.post('/add-koi', (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO koi_fish (
-            id, name, description, size_cm, price, Farm_name,
-            stock, age, address, location, offer_percentage,
-            image_url1, image_url2, image_url3, video_url
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    INSERT INTO koi_fish (
+      id, name, description, size_cm, price, Farm_name,
+      stock, age, address, location, offer_percentage,
+      image_url1, image_url2, image_url3, video_url
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
     const values = [
         id, name, description, size_cm, price, Farm_name,
@@ -59,75 +60,76 @@ app.post('/add-koi', (req, res) => {
         image_url1, image_url2, image_url3, video_url
     ];
 
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error inserting koi:', err);
-            return res.status(500).json({ error: 'Database insert failed' });
-        }
+    try {
+        const [result] = await pool.query(sql, values);
         res.status(200).json({ message: 'Koi added successfully', result });
-    });
+    } catch (err) {
+        console.error('Error inserting koi:', err);
+        res.status(500).json({ error: 'Database insert failed' });
+    }
+});
+
+app.get('/get-koi', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM koi_fish');
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error('Error fetching koi:', err);
+        res.status(500).json({ error: 'Failed to fetch koi data' });
+    }
 });
 
 
-app.get('/get-koi', (req, res) => {
-    db.query('SELECT * FROM koi_fish', (err, result) => {
-        if (err) {
-            console.error('Error fetching koi:', err);
-            return res.status(500).json({ error: 'Failed to fetch koi data' });
-        }
-        res.status(200).json(result);
-    });
-});
+app.post('/delete-koi', async (req, res) => {
+  const { id } = req.body;
 
-app.post('/delete-koi', (req, res) => {
-    const { id } = req.body;
+  if (!id) {
+    return res.status(400).json({ error: 'ID is required to delete koi' });
+  }
 
-    if (!id) {
-        return res.status(400).json({ error: 'ID is required to delete koi' });
+  const sql = 'DELETE FROM koi_fish WHERE id = ?';
+
+  try {
+    const [result] = await pool.query(sql, [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Koi not found' });
     }
 
-    const sql = 'DELETE FROM koi_fish WHERE id = ?';
-
-    db.query(sql, [id], (err, result) => {
-        if (err) {
-            console.error('Error deleting koi:', err);
-            return res.status(500).json({ error: 'Failed to delete koi' });
-        }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Koi not found' });
-        }
-
-        res.status(200).json({ message: 'Koi deleted successfully' });
-    });
+    res.status(200).json({ message: 'Koi deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting koi:', err);
+    res.status(500).json({ error: 'Failed to delete koi' });
+  }
 });
+
 
 // Signup Route
 app.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-  try {
-    // Check if user exists
-    const [existingUsers] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
+    try {
+        // Check if user exists
+        const [existingUsers] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
 
-    if (existingUsers.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
+        if (existingUsers.length > 0) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert user
+        await pool.query(
+            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+            [username, email, hashedPassword]
+        );
+
+        res.status(200).json({ success: true, message: "User registered successfully" });
+    } catch (error) {
+        console.error("Signup error:", error);
+        res.status(500).json({ message: "Signup error", error: error.message });
     }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Insert user
-    await pool.query(
-      "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-      [username, email, hashedPassword]
-    );
-
-    res.status(200).json({ success: true, message: "User registered successfully" });
-  } catch (error) {
-    console.error("Signup error:", error);
-    res.status(500).json({ message: "Signup error", error: error.message });
-  }
 });
 
 
