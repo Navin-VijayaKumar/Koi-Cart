@@ -9,6 +9,8 @@ import About from './Pages/About/About'
 import Scape from './Pages/Scape/Scape'
 import Footer from './Components/Footer/Footer'
 import Contact from './Pages/Contact/Contact'
+import Signup from './Components/Auth/Signup'
+import Login from './Components/Auth/Login'
 import InnerDisplay from './Components/InnerDisplay/InnerDisplay'
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
         <Route path='/about' element={<About></About>} />
         <Route path='/scape' element={<Scape></Scape>} />
         <Route path='/contact' element={<Contact></Contact>} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path='/product/:productID' element={<InnerDisplay></InnerDisplay>} />
       </Routes>
       <Footer></Footer>

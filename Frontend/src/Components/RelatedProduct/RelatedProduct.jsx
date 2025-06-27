@@ -6,14 +6,14 @@ import { useContext } from "react";
 import { Shopcontext } from '../../Context/ShopContext';
 import Discount from '../Discount/Discount.jsx';
 import { Link } from 'react-router-dom';
-const RelatedProduct = () => {
-     const statusBgColor = {
-    "Sold Out": "rgb(254, 101, 103)",
-    "In Stock": "rgb(161, 251, 138)",
-  };
+const RelatedProduct = ({ Farm_name }) => {
+    const statusBgColor = {
+        "Sold Out": "rgb(254, 101, 103)",
+        "In Stock": "rgb(161, 251, 138)",
+    };
 
     const { all_product } = useContext(Shopcontext);
-    
+
     const [hoveredProductId, setHoveredProductId] = useState(null);
     const [currentImageIndexes, setCurrentImageIndexes] = useState({});
 
@@ -43,18 +43,18 @@ const RelatedProduct = () => {
         setCurrentImageIndexes({});
     };
 
-const handelup = () => {
-    window.scrollTo(0, 0);
-}
+    const handelup = () => {
+        window.scrollTo(0, 0);
+    }
 
     return (
         <div className="buy-con">
 
 
             <div className="product-grid">
-                {all_product.length > 0 ? ( 
+                {all_product.length > 0 ? (
                     all_product.map((product) => {
-                        const images = [product.image_url1, product.image_url2, product.image_url3].filter(Boolean);
+                        if (product.Farm_name !== Farm_name) return null; const images = [product.image_url1, product.image_url2, product.image_url3].filter(Boolean);
                         const currentIndex = currentImageIndexes[product.id] || 0;
 
                         return (

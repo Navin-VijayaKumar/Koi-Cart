@@ -213,7 +213,7 @@ const InnerDisplay = () => {
       </div>
       <div className="related-products">
         <h2>Related Fish</h2>
-        <RelatedProduct></RelatedProduct>
+        <RelatedProduct Farm_name={koi.Farm_name}></RelatedProduct>
       </div>
     </div>
   );
