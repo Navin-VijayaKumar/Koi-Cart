@@ -3,6 +3,13 @@ import './AddProduct.css';
 
 const AddProduct = () => {
   const [loading, setLoading] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState({
+    image1: false,
+    image2: false,
+    image3: false,
+    video: false
+  });
+  
   const [productDetails, setProductDetails] = useState({
     name: '',
     description: '',
@@ -27,6 +34,82 @@ const AddProduct = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  // Upload file to Cloudinary
+  const uploadToCloudinary = async (file, fileType) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      const response = await fetch('http://localhost:3000/upload-media', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+      
+      const data = await response.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Failed to upload file');
+      return null;
+    }
+  };
+
+  // Handle file uploads
+  const handleFileUpload = async (e, fieldName) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    
+    if (fieldName.includes('image') && !isImage) {
+      alert('Please select an image file');
+      return;
+    }
+    
+    if (fieldName === 'video' && !isVideo) {
+      alert('Please select a video file');
+      return;
+    }
+
+    // Validate file size (10MB for images, 50MB for videos)
+    const maxSize = isVideo ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert(`File size too large. Maximum size: ${isVideo ? '50MB' : '10MB'}`);
+      return;
+    }
+
+    // Set uploading state
+    setUploadingFiles(prev => ({
+      ...prev,
+      [fieldName]: true
+    }));
+
+    try {
+      const uploadedUrl = await uploadToCloudinary(file);
+      if (uploadedUrl) {
+        const urlField = fieldName === 'image1' ? 'image_url1' : 
+                        fieldName === 'image2' ? 'image_url2' : 
+                        fieldName === 'image3' ? 'image_url3' : 'video_url';
+        
+        setProductDetails(prev => ({
+          ...prev,
+          [urlField]: uploadedUrl
+        }));
+      }
+    } finally {
+      setUploadingFiles(prev => ({
+        ...prev,
+        [fieldName]: false
+      }));
+    }
   };
 
   // Add new koi product
@@ -92,7 +175,6 @@ const AddProduct = () => {
     <div className="addproduct">
       <div className="addproduct-items">
         <h1>Add New Koi Fish</h1>
-        
         
         <div className="addproduct-field">
           <p>Name *</p>
@@ -208,53 +290,77 @@ const AddProduct = () => {
         </div>
 
         <div className="addproduct-field">
-          <p>Image URL 1</p>
+          <p>Image 1</p>
           <input
-            type="url"
-            name="image_url1"
-            value={productDetails.image_url1}
-            onChange={handleInputChange}
-            placeholder="https://example.com/image1.jpg"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileUpload(e, 'image1')}
+            disabled={uploadingFiles.image1}
           />
+          {uploadingFiles.image1 && <p>Uploading image...</p>}
+          {productDetails.image_url1 && (
+            <div className="uploaded-preview">
+              <img src={productDetails.image_url1} alt="Preview" style={{width: '100px', height: '100px', objectFit: 'cover'}} />
+              <p>✓ Uploaded</p>
+            </div>
+          )}
         </div>
 
         <div className="addproduct-field">
-          <p>Image URL 2</p>
+          <p>Image 2</p>
           <input
-            type="url"
-            name="image_url2"
-            value={productDetails.image_url2}
-            onChange={handleInputChange}
-            placeholder="https://example.com/image2.jpg"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileUpload(e, 'image2')}
+            disabled={uploadingFiles.image2}
           />
+          {uploadingFiles.image2 && <p>Uploading image...</p>}
+          {productDetails.image_url2 && (
+            <div className="uploaded-preview">
+              <img src={productDetails.image_url2} alt="Preview" style={{width: '100px', height: '100px', objectFit: 'cover'}} />
+              <p>✓ Uploaded</p>
+            </div>
+          )}
         </div>
 
         <div className="addproduct-field">
-          <p>Image URL 3</p>
+          <p>Image 3</p>
           <input
-            type="url"
-            name="image_url3"
-            value={productDetails.image_url3}
-            onChange={handleInputChange}
-            placeholder="https://example.com/image3.jpg"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileUpload(e, 'image3')}
+            disabled={uploadingFiles.image3}
           />
+          {uploadingFiles.image3 && <p>Uploading image...</p>}
+          {productDetails.image_url3 && (
+            <div className="uploaded-preview">
+              <img src={productDetails.image_url3} alt="Preview" style={{width: '100px', height: '100px', objectFit: 'cover'}} />
+              <p>✓ Uploaded</p>
+            </div>
+          )}
         </div>
 
         <div className="addproduct-field">
-          <p>Video URL</p>
+          <p>Video</p>
           <input
-            type="url"
-            name="video_url"
-            value={productDetails.video_url}
-            onChange={handleInputChange}
-            placeholder="https://example.com/video.mp4"
+            type="file"
+            accept="video/*"
+            onChange={(e) => handleFileUpload(e, 'video')}
+            disabled={uploadingFiles.video}
           />
+          {uploadingFiles.video && <p>Uploading video...</p>}
+          {productDetails.video_url && (
+            <div className="uploaded-preview">
+              <video src={productDetails.video_url} style={{width: '100px', height: '100px'}} controls />
+              <p>✓ Uploaded</p>
+            </div>
+          )}
         </div>
 
         <div className="down">
           <button
             onClick={addKoiProduct}
-            disabled={loading}
+            disabled={loading || Object.values(uploadingFiles).some(Boolean)}
             className={`addproduct-button ${loading ? 'loading' : ''}`}
           >
             {loading ? 'Adding Koi...' : 'Add Koi Fish'}

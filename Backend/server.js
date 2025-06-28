@@ -4,8 +4,30 @@ const bcrypt = require('bcrypt');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 50 * 1024 * 1024, // 50MB limit
+    },
+    fileFilter: (req, file, cb) => {
+        // Accept images and videos
+        if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image and video files are allowed'), false);
+        }
+    }
+});
 
 const pool = mysql.createPool({
     host: 'localhost',
@@ -27,6 +49,51 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Backend Server!');
 }
 );
+
+
+
+app.post('/upload-media', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        const isVideo = req.file.mimetype.startsWith('video/');
+        
+        // Upload to Cloudinary
+        const uploadResult = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                    resource_type: isVideo ? 'video' : 'image',
+                    folder: 'koi-fish', // Organize uploads in a folder
+                    transformation: isVideo ? [] : [
+                        { width: 800, height: 600, crop: 'limit' }, // Resize images
+                        { quality: 'auto' }, // Auto optimize quality
+                        { fetch_format: 'auto' } // Auto format (webp, etc.)
+                    ]
+                },
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            );
+            uploadStream.end(req.file.buffer);
+        });
+
+        res.json({
+            message: 'File uploaded successfully',
+            secure_url: uploadResult.secure_url,
+            public_id: uploadResult.public_id
+        });
+
+    } catch (error) {
+        console.error('Error uploading to Cloudinary:', error);
+        res.status(500).json({ error: 'Failed to upload file' });
+    }
+});
+
+
+
 app.post('/add-koi', async (req, res) => {
     const {
         id,
