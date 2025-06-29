@@ -12,6 +12,7 @@ import Contact from './Pages/Contact/Contact'
 import Signup from './Components/Auth/Signup'
 import Login from './Components/Auth/Login'
 import InnerDisplay from './Components/InnerDisplay/InnerDisplay'
+import Payment from './Components/Payment/Payment'
 function App() {
 
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/account" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+          <Route path="/payment/:productId" element={<Payment />} />
         <Route path='/product/:productID' element={<InnerDisplay></InnerDisplay>} />
       </Routes>
       <Footer></Footer>

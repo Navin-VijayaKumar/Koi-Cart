@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './InnerDisplay.css';
 import { Shopcontext } from '../../Context/ShopContext';
 import { Link, useParams, useNavigate } from 'react-router-dom';
@@ -9,9 +9,11 @@ import { Ri24HoursFill, RiSecurePaymentLine } from "react-icons/ri";
 import { IoIosTrophy } from "react-icons/io";
 import { FaMapLocationDot } from "react-icons/fa6";
 import RelatedProduct from '../RelatedProduct/RelatedProduct';
+
 const InnerDisplay = () => {
   const { all_product } = useContext(Shopcontext);
   const { productID } = useParams();
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +56,32 @@ const InnerDisplay = () => {
     setShowAlert(false);
   };
 
+  // Handle Buy button click
+  const handleBuy = () => {
+    if (!koi || koi.stock <= 0) {
+      setErrorMessage("Product is out of stock");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+
+    try {
+      // Get user ID (you might get this from context, localStorage, or authentication)
+      const userId = localStorage.getItem('userId') || 'user123'; // Replace with your user authentication logic
+      
+      const discountedPrice = (koi.price - (koi.price * koi.offer_percentage) / 100).toFixed(2);
+      
+      // Navigate to payment page with product details
+      navigate(`/payment/${koi.id}?userId=${userId}&offerPrice=${discountedPrice}`);
+    } catch (error) {
+      setErrorMessage("Failed to proceed to payment. Please try again.");
+      console.error('Error navigating to payment:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!koi) {
     return <div>Loading koi details...</div>;
   }
@@ -73,14 +101,11 @@ const InnerDisplay = () => {
             <div className="imageslider">
               <div className="carousel">
                 <div className="carousel-container">
-
                   <img
                     src={media[currentIndex].src}
                     alt={`Slide ${currentIndex + 1}`}
                     className="carousel-image"
                   />
-
-
                 </div>
                 <button className="prev" onClick={prevSlide}>
                   &#10094;
@@ -146,7 +171,6 @@ const InnerDisplay = () => {
             </div>
             <div className="">
               <p>Address:<span>{koi.address}</span></p>
-
             </div>
             <Link to="/delivery_address" className="add-location-link">
               <div className="add-location">
@@ -154,8 +178,6 @@ const InnerDisplay = () => {
                 <h4>Add Location</h4>
               </div>
             </Link>
-
-
 
             {showAlert && (
               <div className="alert-overlay">
@@ -170,47 +192,34 @@ const InnerDisplay = () => {
 
             <div className="button-buy-cart">
               {koi.stock <= 0 ? (
-                <>
-                  <div className="buy-btn btn-disabled"><p>BUY</p></div>
-                  <div className="buy-btn btn-disabled"><p>ADD TO CART</p></div>
-                </>
+                <div className="buy-btn btn-disabled">
+                  <p>OUT OF STOCK</p>
+                </div>
               ) : (
-                <>
-                  <div className="buy-btn" onClick={() => { /* Add buy functionality */ }}>
-                    <p>{isLoading ? "Processing..." : "Buy"}</p>
-                  </div>
-                  <div
-                    className="add-cart"
-                    onClick={() => {
-                      addToCart(koi.id, selectCount);
-                      setShowAlert(true);
-                    }}
-                  >
-                    <p>ADD TO CART</p>
-                  </div>
-                </>
+                <div className="buy-btn" onClick={handleBuy}>
+                  <p>{isLoading ? "Processing..." : "BUY NOW"}</p>
+                </div>
               )}
             </div>
 
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {isLoading && <p>Processing your order...</p>}
           </div>
         </div>
       </div>
+      
       <div className="inner-display-video">
         <div className="video-play">
-
           <video
             src={koi.video_url}
             className="carousel-image"
             autoPlay
             muted
             loop
-            share
             controls
           />
         </div>
       </div>
+      
       <div className="related-products">
         <h2>Related Fish</h2>
         <RelatedProduct Farm_name={koi.Farm_name}></RelatedProduct>
