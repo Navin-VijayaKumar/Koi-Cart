@@ -226,6 +226,114 @@ app.post("/login", async (req, res) => {
     }
 });
 
+// Create Order Route
+app.post('/api/create-order', async (req, res) => {
+    const {
+        userId,
+        paymentId,
+        productId,
+        productName,
+        price,
+        quantity,
+        shippingDetails,
+        productDetails
+    } = req.body;
+
+    try {
+        // Get user email from userId
+        const [users] = await pool.query("SELECT email FROM users WHERE id = ?", [userId]);
+        
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const userEmail = users[0].email;
+
+        // Insert order into database
+        const orderSql = `
+            INSERT INTO orders (
+                user_id, user_email, product_id, product_name, price, quantity,
+                payment_id, shipping_details, product_details, status, order_date
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', NOW())
+        `;
+
+        const orderValues = [
+            userId,
+            userEmail,
+            productId,
+            productName,
+            price,
+            quantity,
+            paymentId,
+            JSON.stringify(shippingDetails),
+            JSON.stringify(productDetails)
+        ];
+
+        const [result] = await pool.query(orderSql, orderValues);
+
+        res.status(200).json({
+            success: true,
+            message: 'Order created successfully',
+            orderId: result.insertId
+        });
+
+    } catch (error) {
+        console.error('Error creating order:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create order',
+            error: error.message
+        });
+    }
+});
+
+// Get Orders by User ID Route
+app.get('/api/orders/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Get orders with product details
+        const orderSql = `
+            SELECT 
+                o.*,
+                k.name as productName,
+                k.image_url1,
+                k.image_url2,
+                k.image_url3,
+                k.Farm_name,
+                k.size_cm,
+                k.age,
+                k.location
+            FROM orders o
+            LEFT JOIN koi_fish k ON o.product_id = k.id
+            WHERE o.user_id = ?
+            ORDER BY o.order_date DESC
+        `;
+
+        const [orders] = await pool.query(orderSql, [userId]);
+
+        // Parse JSON fields
+        const processedOrders = orders.map(order => ({
+            ...order,
+            shippingDetails: order.shipping_details ? JSON.parse(order.shipping_details) : {},
+            productDetails: order.product_details ? JSON.parse(order.product_details) : {}
+        }));
+
+        res.status(200).json({
+            success: true,
+            orders: processedOrders
+        });
+
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch orders',
+            error: error.message
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 }
