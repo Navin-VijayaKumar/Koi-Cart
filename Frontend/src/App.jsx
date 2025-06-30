@@ -13,6 +13,7 @@ import Signup from './Components/Auth/Signup'
 import Login from './Components/Auth/Login'
 import InnerDisplay from './Components/InnerDisplay/InnerDisplay'
 import Payment from './Components/Payment/Payment'
+import Orders from './Components/Orders/Orders'
 function App() {
 
   return (
@@ -20,7 +21,7 @@ function App() {
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/cart' element={<Cart></Cart>} />
+        <Route path='/cart' element={<Orders></Orders>} />
         <Route path='/buy' element={<Buy />} />
         <Route path='/about' element={<About></About>} />
         <Route path='/scape' element={<Scape></Scape>} />

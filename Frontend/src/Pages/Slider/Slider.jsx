@@ -8,7 +8,6 @@ import a1 from '../PageAssets/a1.png'
 //  import  from "../AssertsPage/nsslider1.mp4"; // Ensure this is a video file
 
 const media = [
-  { type: "video", src: a1 },
   { type: "image", src: a1},
   { type: "image", src: a1 },
   { type: "image", src: a1 },

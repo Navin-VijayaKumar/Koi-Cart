@@ -7,6 +7,10 @@ import { CiSettings } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import { RiLandscapeAiLine } from "react-icons/ri";
 import { FaBars } from "react-icons/fa";
+import { TbShoppingCartCopy } from "react-icons/tb";
+
+import { BsFillCartCheckFill } from "react-icons/bs";
+
 import { Link } from 'react-router-dom';
 import h1 from '../ComponentAsseets/k1.png'
 
@@ -42,8 +46,8 @@ const Navbar = () => {
                     </div>
                     </Link>
                     <Link to="/cart"><div className="icon-lable">
-                        <IoCartOutline className='logo-cen-1' />
-                        <p>Cart</p>
+                        <TbShoppingCartCopy className='logo-cen-1'  />
+                        <p>Orders</p>
                     </div>
                     </Link>
                     <Link to="/account"> <div className="icon-lable">
@@ -69,7 +73,7 @@ const Navbar = () => {
 
             </div></Link>
         </div>
-            </div>
+    </div>
 
     )
 }

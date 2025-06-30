@@ -62,53 +62,55 @@ const Payment = () => {
   };
 
   // Process order after successful payment
-  const processOrder = async (paymentId) => {
-    try {
-      if (!userId || !product) {
-        throw new Error('Missing user or product information');
-      }
+ // In your Payment.js file, update the processOrder function:
 
-      // Send order details to backend
-      const orderData = {
-        userId,
-        paymentId,
-        productId: product.id,
-        productName: product.name,
-        price: offerPrice,
-        quantity: 1,
-        shippingDetails: {
-          fullName: formData.fullName,
-          email: formData.email,
-          contact: formData.contact,
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          zipCode: formData.zipCode
-        },
-        productDetails: {
-          farmName: product.Farm_name,
-          age: product.age,
-          size: product.size_cm,
-          location: product.location
-        }
-      };
-
-      const response = await axios.post('https://southerntexport-e-commerce.onrender.com/api/create-order', orderData);
-
-      if (response.data.success) {
-        alert('Order placed successfully!');
-        navigate('/order-confirmation');
-      } else {
-        alert('Failed to complete order: ' + response.data.message);
-      }
-    } catch (error) {
-      console.error('Error processing order:', error);
-      alert('There was an issue processing your order. Please contact support.');
-    } finally {
-      setIsProcessing(false);
+const processOrder = async (paymentId) => {
+  try {
+    if (!userId || !product) {
+      throw new Error('Missing user or product information');
     }
-  };
 
+    // Send order details to backend
+    const orderData = {
+      userId,
+      paymentId,
+      productId: product.id,
+      productName: product.name,
+      price: offerPrice,
+      quantity: 1,
+      shippingDetails: {
+        fullName: formData.fullName,
+        email: formData.email,
+        contact: formData.contact,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode
+      },
+      productDetails: {
+        farmName: product.Farm_name,
+        age: product.age,
+        size: product.size_cm,
+        location: product.location
+      }
+    };
+
+    const response = await axios.post('http://localhost:3000/api/create-order', orderData);
+
+    if (response.data.success) {
+      alert('Order placed successfully!');
+      // Navigate to orders page instead of non-existent order-confirmation
+      navigate('/orders');
+    } else {
+      alert('Failed to complete order: ' + response.data.message);
+    }
+  } catch (error) {
+    console.error('Error processing order:', error);
+    alert('There was an issue processing your order. Please contact support.');
+  } finally {
+    setIsProcessing(false);
+  }
+};
   const handleSubmit = (e) => {
     e.preventDefault();
 
