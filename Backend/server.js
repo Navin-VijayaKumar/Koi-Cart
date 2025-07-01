@@ -17,7 +17,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 50 * 1024 * 1024, 
+        fileSize: 50 * 1024 * 1024,
     },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
@@ -58,17 +58,17 @@ app.post('/upload-media', upload.single('file'), async (req, res) => {
         }
 
         const isVideo = req.file.mimetype.startsWith('video/');
-        
+
         // Upload to Cloudinary
         const uploadResult = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     resource_type: isVideo ? 'video' : 'image',
-                    folder: 'koi-fish', // Organize uploads in a folder
+                    folder: 'koi-fish', 
                     transformation: isVideo ? [] : [
-                        { width: 800, height: 600, crop: 'limit' }, // Resize images
-                        { quality: 'auto' }, // Auto optimize quality
-                        { fetch_format: 'auto' } // Auto format (webp, etc.)
+                        { width: 800, height: 600, crop: 'limit' }, 
+                        { quality: 'auto' },
+                        { fetch_format: 'auto' } 
                     ]
                 },
                 (error, result) => {
@@ -147,26 +147,26 @@ app.get('/get-koi', async (req, res) => {
 
 
 app.post('/delete-koi', async (req, res) => {
-  const { id } = req.body;
+    const { id } = req.body;
 
-  if (!id) {
-    return res.status(400).json({ error: 'ID is required to delete koi' });
-  }
-
-  const sql = 'DELETE FROM koi_fish WHERE id = ?';
-
-  try {
-    const [result] = await pool.query(sql, [id]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Koi not found' });
+    if (!id) {
+        return res.status(400).json({ error: 'ID is required to delete koi' });
     }
 
-    res.status(200).json({ message: 'Koi deleted successfully' });
-  } catch (err) {
-    console.error('Error deleting koi:', err);
-    res.status(500).json({ error: 'Failed to delete koi' });
-  }
+    const sql = 'DELETE FROM koi_fish WHERE id = ?';
+
+    try {
+        const [result] = await pool.query(sql, [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Koi not found' });
+        }
+
+        res.status(200).json({ message: 'Koi deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting koi:', err);
+        res.status(500).json({ error: 'Failed to delete koi' });
+    }
 });
 
 
@@ -175,17 +175,15 @@ app.post("/signup", async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
-        // Check if user exists
+
         const [existingUsers] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
 
         if (existingUsers.length > 0) {
             return res.status(400).json({ message: "User already exists" });
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert user
         await pool.query(
             "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
             [username, email, hashedPassword]
@@ -240,16 +238,15 @@ app.post('/api/create-order', async (req, res) => {
     } = req.body;
 
     try {
-        // Get user email from userId
+
         const [users] = await pool.query("SELECT email FROM users WHERE id = ?", [userId]);
-        
+
         if (users.length === 0) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
         const userEmail = users[0].email;
 
-        // Insert order into database
         const orderSql = `
             INSERT INTO orders (
                 user_id, user_email, product_id, product_name, price, quantity,

@@ -114,7 +114,7 @@ const AddProduct = () => {
 
   // Add new koi product
   const addKoiProduct = async () => {
-    // Validation
+
     const requiredFields = ['name', 'description', 'size_cm', 'price', 'Farm_name', 'stock', 'age', 'address', 'location'];
     for (const field of requiredFields) {
       if (!productDetails[field]) {

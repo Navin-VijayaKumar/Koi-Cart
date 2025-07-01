@@ -257,6 +257,11 @@ option {
   justify-content: center;
 }
 
+@media (max-width: 2600px) {
+  .product-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
 @media (max-width: 2000px) {
   .product-grid {
     grid-template-columns: repeat(5, 1fr);
