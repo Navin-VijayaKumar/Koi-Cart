@@ -9,7 +9,7 @@ const Payment = () => {
   const { all_product } = useContext(Shopcontext);
   const { productId } = useParams();
   const navigate = useNavigate();
-  
+
   const [product, setProduct] = useState(null);
   const [userId, setUserId] = useState('');
   const [offerPrice, setOfferPrice] = useState(0);
@@ -25,15 +25,13 @@ const Payment = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    // Get product details and payment info from URL params
     const urlParams = new URLSearchParams(window.location.search);
     const userIdFromUrl = urlParams.get('userId');
     const offerPriceFromUrl = urlParams.get('offerPrice');
-    
+
     if (userIdFromUrl) setUserId(userIdFromUrl);
     if (offerPriceFromUrl) setOfferPrice(parseFloat(offerPriceFromUrl));
-    
-    // Find the product
+
     const foundProduct = all_product.find(p => p.id === parseInt(productId));
     if (foundProduct) {
       setProduct(foundProduct);
@@ -61,56 +59,53 @@ const Payment = () => {
     });
   };
 
-  // Process order after successful payment
- // In your Payment.js file, update the processOrder function:
 
-const processOrder = async (paymentId) => {
-  try {
-    if (!userId || !product) {
-      throw new Error('Missing user or product information');
-    }
-
-    // Send order details to backend
-    const orderData = {
-      userId,
-      paymentId,
-      productId: product.id,
-      productName: product.name,
-      price: offerPrice,
-      quantity: 1,
-      shippingDetails: {
-        fullName: formData.fullName,
-        email: formData.email,
-        contact: formData.contact,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode
-      },
-      productDetails: {
-        farmName: product.Farm_name,
-        age: product.age,
-        size: product.size_cm,
-        location: product.location
+  const processOrder = async (paymentId) => {
+    try {
+      if (!userId || !product) {
+        throw new Error('Missing user or product information');
       }
-    };
 
-    const response = await axios.post('http://localhost:3000/api/create-order', orderData);
+      // Send order details to backend
+      const orderData = {
+        userId,
+        paymentId,
+        productId: product.id,
+        productName: product.name,
+        price: offerPrice,
+        quantity: 1,
+        shippingDetails: {
+          fullName: formData.fullName,
+          email: formData.email,
+          contact: formData.contact,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode
+        },
+        productDetails: {
+          farmName: product.Farm_name,
+          age: product.age,
+          size: product.size_cm,
+          location: product.location
+        }
+      };
 
-    if (response.data.success) {
-      alert('Order placed successfully!');
-      // Navigate to orders page instead of non-existent order-confirmation
-      navigate('/orders');
-    } else {
-      alert('Failed to complete order: ' + response.data.message);
+      const response = await axios.post('http://localhost:3000/api/create-order', orderData);
+
+      if (response.data.success) {
+        alert('Order placed successfully!');
+        navigate('/orders');
+      } else {
+        alert('Failed to complete order: ' + response.data.message);
+      }
+    } catch (error) {
+      console.error('Error processing order:', error);
+      alert('There was an issue processing your order. Please contact support.');
+    } finally {
+      setIsProcessing(false);
     }
-  } catch (error) {
-    console.error('Error processing order:', error);
-    alert('There was an issue processing your order. Please contact support.');
-  } finally {
-    setIsProcessing(false);
-  }
-};
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -126,15 +121,17 @@ const processOrder = async (paymentId) => {
     }
 
     setIsProcessing(true);
-    
-    // Razorpay configuration
+
+
     const options = {
-      key: "rzp_test_1Be4hjU2M9caQO", // Replace with your actual Razorpay key
-      amount: offerPrice * 100, // Amount in paise
+      key: "rzp_test_1Be4hjU2M9caQO",
+      key_secret: "SVqpIzF3TfroEXG2AhAoX1A7",
+
+      amount: offerPrice * 100,
       currency: "INR",
       name: "Koi Cart",
       description: `Payment for ${product.name}`,
-      image: product.image_url1, // Optional: Add product image
+      image: product.image_url1,
       handler: function (response) {
         console.log('Payment successful:', response);
         processOrder(response.razorpay_payment_id);
@@ -160,7 +157,7 @@ const processOrder = async (paymentId) => {
         color: "#ff5a5a"
       },
       modal: {
-        ondismiss: function() {
+        ondismiss: function () {
           setIsProcessing(false);
           console.log('Payment modal closed');
         }
@@ -303,14 +300,14 @@ const processOrder = async (paymentId) => {
               <div className="order-item">
                 <div className="item-info">
                   <div className="item-image">
-                    <img 
-                      src={product.image_url1} 
+                    <img
+                      src={product.image_url1}
                       alt={product.name}
-                      style={{ 
-                        width: '80px', 
-                        height: '80px', 
-                        objectFit: 'cover', 
-                        borderRadius: '8px' 
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        objectFit: 'cover',
+                        borderRadius: '8px'
                       }}
                     />
                   </div>

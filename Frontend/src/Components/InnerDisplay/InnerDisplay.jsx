@@ -67,12 +67,10 @@ const InnerDisplay = () => {
     setErrorMessage('');
 
     try {
-      // Get user ID (you might get this from context, localStorage, or authentication)
-      const userId = localStorage.getItem('userId') || 'user123'; // Replace with your user authentication logic
+      const userId = localStorage.getItem('userId') || 'user123'; 
       
       const discountedPrice = (koi.price - (koi.price * koi.offer_percentage) / 100).toFixed(2);
       
-      // Navigate to payment page with product details
       navigate(`/payment/${koi.id}?userId=${userId}&offerPrice=${discountedPrice}`);
     } catch (error) {
       setErrorMessage("Failed to proceed to payment. Please try again.");
