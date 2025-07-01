@@ -28,15 +28,28 @@ const upload = multer({
     }
 });
 
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: process.env.MYSQLDB_PASSWORD,
-    database: 'koiCart',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+// Connect to MySQL database
+var pool = null;
+try {
+
+    pool = mysql.createPool({
+        host: 'mysql-1a183c1c-koicart.c.aivencloud.com',
+        user: 'avnadmin',
+        port: 15574,
+        password: process.env.MYSQLDB_PASSWORD,
+        database: 'koiCart',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+    });
+
+    console.log('Connected to the database successfully');
+} catch (error) {
+    console.error('Error connecting to the database:', error);
+    process.exit(1); // Exit the process if the database connection fails
+}
+
+
 
 
 
@@ -64,11 +77,11 @@ app.post('/upload-media', upload.single('file'), async (req, res) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     resource_type: isVideo ? 'video' : 'image',
-                    folder: 'koi-fish', 
+                    folder: 'koi-fish',
                     transformation: isVideo ? [] : [
-                        { width: 800, height: 600, crop: 'limit' }, 
+                        { width: 800, height: 600, crop: 'limit' },
                         { quality: 'auto' },
-                        { fetch_format: 'auto' } 
+                        { fetch_format: 'auto' }
                     ]
                 },
                 (error, result) => {
