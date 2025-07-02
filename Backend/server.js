@@ -28,27 +28,15 @@ const upload = multer({
     }
 });
 
-// Connect to MySQL database
-var pool = null;
-try {
-
-    pool = mysql.createPool({
-        host: 'mysql-1a183c1c-koicart.c.aivencloud.com',
-        user: 'avnadmin',
-        port: 15574,
-        password: process.env.MYSQLDB_PASSWORD,
-        database: 'koiCart',
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0
-    });
-
-    console.log('Connected to the database successfully');
-} catch (error) {
-    console.error('Error connecting to the database:', error);
-    process.exit(1); // Exit the process if the database connection fails
-}
-
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: process.env.MYSQLDB_PASSWORD,
+    database: 'koiCart',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 
 
